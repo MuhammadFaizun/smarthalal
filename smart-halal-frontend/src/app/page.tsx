@@ -1,4 +1,6 @@
 'use client';
+// Trigger Vercel build with updated root directory
+
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
