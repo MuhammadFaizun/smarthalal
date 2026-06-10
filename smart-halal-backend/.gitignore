@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Environment variables (CRITICAL: Contains database credentials and secret keys)
+.env
+.env*.local
+
+# Debug logs
+npm-debug.log*
+
+# System Files
+.DS_Store

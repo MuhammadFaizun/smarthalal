@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js build output
+.next/
+**/.next/
+out/
+**/out/
+
+# Production builds
+dist/
+**/dist/
+build/
+**/build/
+
+# Environment variables (CRITICAL: Contains database credentials and secret keys)
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+.env*.local
+**/.env
+**/.env.local
+**/.env.production
+**/.env.development
+**/.env.test
+**/.env*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.pnpm-debug.log*
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# TypeScript build info
+*.tsbuildinfo
+**/*.tsbuildinfo
