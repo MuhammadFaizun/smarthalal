@@ -230,10 +230,10 @@ export default function Home() {
   }, [language]);
 
   return (
-    <main style={{ minHeight: '100vh', padding: '0 16px 80px', color: '#f0fdf4', position: 'relative' }}>
+    <main style={{ minHeight: '100vh', color: '#f0fdf4', position: 'relative' }}>
       <div className="page-bg" />
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', paddingTop: '120px' }}>
+      <div className="hero-section">
 
         {/* Gold pill */}
         <div className="fade-up" style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
@@ -265,13 +265,9 @@ export default function Home() {
           <SearchBar onSearch={handleSearch} />
         </div>
 
-        {/* Stats — hanya tampil saat belum search */}
         {!hasSearched && (
           <div className="fade-up-3">
-            <div style={{
-              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '16px', marginTop: '48px',
-            }}>
+            <div className="stats-grid">
               {[
                 { label: t('statTotal'),   value: `${stats.total}`, color: '#f0fdf4' },
                 { label: t('statHalal'),   value: `${stats.halal}%`, color: '#4ade80' },
@@ -285,7 +281,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '24px', marginTop: '24px' }}>
+            <div className="legend-row">
               {[
                 { text: t('descHalal'),   color: '#4ade80' },
                 { text: t('descSyubhat'), color: '#fbbf24' },
@@ -319,7 +315,7 @@ export default function Home() {
                     : <span key={i}>{part}</span>
                 )}
               </p>
-              <div style={{ display: 'grid', gap: '16px', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+              <div className="results-grid">
                 {results.map((item, i) => (
                   <div key={item.id} className="fade-up" style={{ animationDelay: `${i * 0.06}s` }}>
                     <IngredientCard item={item} />

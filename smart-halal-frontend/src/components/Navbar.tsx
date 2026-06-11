@@ -104,9 +104,8 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Status badge */}
-            <div style={{
-              display: 'flex',
+            {/* Status badge - hidden on very small screens */}
+            <div className="navbar-badge-hide" style={{
               alignItems: 'center',
               gap: '8px',
               background: 'rgba(240,180,41,0.08)',

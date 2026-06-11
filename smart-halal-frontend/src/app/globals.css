@@ -199,3 +199,110 @@ body {
 ::-webkit-scrollbar-track { background: #0c1a10; }
 ::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(34,197,94,0.5); }
+
+/* ============================================
+   RESPONSIVE - STATS GRID
+   ============================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 32px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - HERO SECTION
+   ============================================ */
+.hero-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 120px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 80px;
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    padding-top: 100px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - NAVBAR (hide db-active badge on small screens)
+   ============================================ */
+.navbar-badge-hide {
+  display: flex;
+}
+
+@media (max-width: 480px) {
+  .navbar-badge-hide {
+    display: none;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - RESULTS GRID
+   ============================================ */
+.results-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+@media (max-width: 640px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - LEGEND PILLS
+   ============================================ */
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 480px) {
+  .legend-row {
+    gap: 16px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - SEARCH SUGGESTIONS
+   ============================================ */
+.suggestions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-left: 4px;
+}
+
+/* ============================================
+   TOUCH TARGETS - improve tap areas on mobile
+   ============================================ */
+@media (max-width: 640px) {
+  .btn-green {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  button {
+    min-height: 36px;
+  }
+}
