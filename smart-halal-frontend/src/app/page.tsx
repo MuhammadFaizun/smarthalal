@@ -185,140 +185,6 @@ function SearchBar({ onSearch }: { onSearch: (q: string) => void }) {
   );
 }
 
-function StatsVisual({ stats, t }: { stats: any; t: any }) {
-  const r = 50;
-  const circ = 2 * Math.PI * r;
-
-  const p_halal = stats.halal;
-  const p_syubhat = stats.syubhat;
-  const p_haram = stats.haram;
-
-  const len_halal = (p_halal / 100) * circ;
-  const len_syubhat = (p_syubhat / 100) * circ;
-  const len_haram = (p_haram / 100) * circ;
-
-  const offset_halal = 0;
-  const offset_syubhat = -len_halal;
-  const offset_haram = -(len_halal + len_syubhat);
-
-  return (
-    <div className="glass-card fade-up-3" style={{
-      borderRadius: '24px',
-      padding: '32px',
-      marginTop: '40px',
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '40px',
-      flexWrap: 'wrap',
-    }}>
-      {/* SVG Doughnut Chart */}
-      <div style={{ position: 'relative', width: '160px', height: '160px', flexShrink: 0 }}>
-        <svg width="100%" height="100%" viewBox="0 0 120 120" style={{ transform: 'rotate(-90deg)' }}>
-          <circle
-            cx="60"
-            cy="60"
-            r={r}
-            fill="transparent"
-            stroke="var(--border-color)"
-            strokeWidth="10"
-          />
-          {p_halal > 0 && (
-            <circle
-              cx="60"
-              cy="60"
-              r={r}
-              fill="transparent"
-              stroke="var(--color-halal)"
-              strokeWidth="10"
-              strokeDasharray={`${len_halal} ${circ - len_halal}`}
-              strokeDashoffset={offset_halal}
-              strokeLinecap="round"
-              style={{ transition: 'stroke-dasharray 0.5s ease' }}
-            />
-          )}
-          {p_syubhat > 0 && (
-            <circle
-              cx="60"
-              cy="60"
-              r={r}
-              fill="transparent"
-              stroke="var(--color-syubhat)"
-              strokeWidth="10"
-              strokeDasharray={`${len_syubhat} ${circ - len_syubhat}`}
-              strokeDashoffset={offset_syubhat}
-              strokeLinecap="round"
-              style={{ transition: 'stroke-dasharray 0.5s ease' }}
-            />
-          )}
-          {p_haram > 0 && (
-            <circle
-              cx="60"
-              cy="60"
-              r={r}
-              fill="transparent"
-              stroke="var(--color-haram)"
-              strokeWidth="10"
-              strokeDasharray={`${len_haram} ${circ - len_haram}`}
-              strokeDashoffset={offset_haram}
-              strokeLinecap="round"
-              style={{ transition: 'stroke-dasharray 0.5s ease' }}
-            />
-          )}
-        </svg>
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
-        }}>
-          <span style={{ fontSize: '28px', fontWeight: 900, color: 'var(--text-primary)', lineHeight: 1 }}>
-            {stats.total}
-          </span>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '2px' }}>
-            {t('statTotal').split(' ')[1] || 'Bahan'}
-          </span>
-        </div>
-      </div>
-
-      {/* Details List */}
-      <div style={{ flex: '1 1 240px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {[
-          { label: t('statHalal'), percent: stats.halal, color: 'var(--color-halal)', bg: 'var(--bg-halal)', desc: t('descHalal') },
-          { label: t('statSyubhat'), percent: stats.syubhat, color: 'var(--color-syubhat)', bg: 'var(--bg-syubhat)', desc: t('descSyubhat') },
-          { label: t('statHaram'), percent: stats.haram, color: 'var(--color-haram)', bg: 'var(--bg-haram)', desc: t('descHaram') },
-        ].map(item => (
-          <div key={item.label} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', fontWeight: 600 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
-                <span>{item.label}</span>
-              </div>
-              <span style={{ color: item.color, fontWeight: 800 }}>{item.percent}%</span>
-            </div>
-            
-            <div style={{ height: '6px', background: 'var(--border-color)', borderRadius: '999px', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%',
-                width: `${item.percent}%`,
-                background: item.color,
-                borderRadius: '999px',
-                transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-              }} />
-            </div>
-            
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{item.desc}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClose: () => void; t: any; translateDynamic: any }) {
   const [copied, setCopied] = useState(false);
 
@@ -331,7 +197,7 @@ function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClos
   const cfg = STATUS_CONFIG[item.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.SYUBHAT;
 
   const handleCopy = () => {
-    const textToCopy = `${translateDynamic(item.name)} (${item.eNumber || '-'}) - Status: ${cfg.label}\nSumber: ${translateDynamic(item.source || '-')}\nKeterangan: ${translateDynamic(item.description || '-')}`;
+    const textToCopy = `${translateDynamic(item.name)} (${item.eNumber || '-'}) - Status: ${cfg.label}\n${t('sourceTitle')}: ${translateDynamic(item.source || '-')}\n${t('detailTitle')}: ${translateDynamic(item.description || '-')}`;
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -393,7 +259,7 @@ function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClos
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
             <h4 style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>
-              {t('sourceText')} / Bahan Baku
+              {t('sourceTitle')}
             </h4>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-primary)', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
               <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke={cfg.color} strokeWidth={2} style={{ flexShrink: 0 }}>
@@ -407,10 +273,10 @@ function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClos
 
           <div>
             <h4 style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>
-              Penjelasan & Tinjauan Syariat
+              {t('detailTitle')}
             </h4>
             <div style={{ background: 'var(--bg-primary)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', lineHeight: 1.6, fontSize: '14px', color: 'var(--text-secondary)' }}>
-              {translateDynamic(item.description) || 'Tidak ada penjelasan tambahan.'}
+              {translateDynamic(item.description) || '—'}
             </div>
           </div>
 
@@ -425,9 +291,9 @@ function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClos
           }}>
             <span style={{ fontSize: '18px', marginTop: '-2px' }}>💡</span>
             <div style={{ fontSize: '12px', lineHeight: 1.5, color: cfg.color, fontWeight: 500 }}>
-              {item.status === 'HALAL' && 'Bahan pangan ini aman untuk dikonsumsi langsung. Pastikan kemasan produk memiliki logo Halal resmi.'}
-              {item.status === 'SYUBHAT' && 'Status kehalalan bahan ini meragukan karena bisa berasal dari hewan atau tanaman. Disarankan untuk memverifikasi sertifikasi halal pabrik/produk.'}
-              {item.status === 'HARAM' && 'Bahan pangan ini dilarang dikonsumsi dalam syariat Islam. Harap hindari produk makanan yang mengandung bahan ini.'}
+              {item.status === 'HALAL' && t('recHalal')}
+              {item.status === 'SYUBHAT' && t('recSyubhat')}
+              {item.status === 'HARAM' && t('recHaram')}
             </div>
           </div>
         </div>
@@ -445,26 +311,33 @@ function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClos
             onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text-secondary)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
           >
-            Tutup
+            {t('closeButton')}
           </button>
+          
           <button
             onClick={handleCopy}
-            className="btn-green"
-            style={{ padding: '0 20px', height: '40px', fontSize: '14px', position: 'relative' }}
+            style={{
+              padding: '10px 20px', borderRadius: '12px', fontSize: '14px', fontWeight: 600,
+              background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--border-color)',
+              color: 'var(--text-primary)', cursor: 'pointer', transition: 'all 0.2s',
+              display: 'flex', alignItems: 'center', gap: '8px',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg-halal)'; e.currentTarget.style.borderColor = 'var(--color-halal)'; e.currentTarget.style.color = 'var(--color-halal)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'; e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
           >
             {copied ? (
               <>
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                Tersalin!
+                {t('copiedText')}
               </>
             ) : (
               <>
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                 </svg>
-                Bagikan / Salin
+                {t('copyButton')}
               </>
             )}
           </button>
@@ -576,7 +449,59 @@ export default function Home() {
 
         {!hasSearched && (
           <div className="fade-up-3">
-            <StatsVisual stats={stats} t={t} />
+            <div className="stats-grid">
+              {[
+                { label: t('statTotal'),   value: `${stats.total}`, color: 'var(--text-primary)', glow: 'rgba(34,197,94,0.02)', border: 'var(--border-color)', topBorder: 'var(--text-primary)' },
+                { label: t('statHalal'),   value: `${stats.halal}%`, color: 'var(--color-halal)', glow: 'var(--glow-halal)', border: 'var(--border-halal)', topBorder: 'var(--color-halal)' },
+                { label: t('statSyubhat'), value: `${stats.syubhat}%`, color: 'var(--color-syubhat)', glow: 'var(--glow-syubhat)', border: 'var(--border-syubhat)', topBorder: 'var(--color-syubhat)' },
+                { label: t('statHaram'),   value: `${stats.haram}%`, color: 'var(--color-haram)', glow: 'var(--glow-haram)', border: 'var(--border-haram)', topBorder: 'var(--color-haram)' },
+              ].map(s => (
+                <div
+                  key={s.label}
+                  className="glass-card"
+                  style={{
+                    borderRadius: '16px',
+                    padding: '24px 20px',
+                    textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'translateY(-3px)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  {/* Glowing background */}
+                  <div style={{
+                    position: 'absolute', top: '-40px', right: '-40px', width: '90px', height: '90px',
+                    borderRadius: '50%', filter: 'blur(20px)', pointerEvents: 'none', background: s.glow,
+                  }} />
+                  {/* Colored top line */}
+                  <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
+                    background: s.topBorder,
+                  }} />
+                  <div style={{ fontSize: '28px', fontWeight: 900, color: s.color, marginBottom: '6px', lineHeight: 1.1 }}>{s.value}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="legend-row">
+              {[
+                { text: t('descHalal'),   color: 'var(--color-halal)' },
+                { text: t('descSyubhat'), color: 'var(--color-syubhat)' },
+                { text: t('descHaram'),   color: 'var(--color-haram)' },
+              ].map(item => (
+                <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 600, color: item.color }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color, display: 'inline-block' }} />
+                  {item.text}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

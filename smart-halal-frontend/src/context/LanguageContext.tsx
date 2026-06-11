@@ -41,6 +41,14 @@ const translations = {
     statusHaram: "HARAM",
     statusSyubhat: "SYUBHAT",
     sourceText: "Sumber",
+    detailTitle: "Penjelasan & Tinjauan Syariat",
+    sourceTitle: "Bahan Baku / Sumber",
+    closeButton: "Tutup",
+    copyButton: "Salin Informasi",
+    copiedText: "Tersalin!",
+    recHalal: "Bahan pangan ini aman untuk dikonsumsi langsung. Pastikan kemasan produk memiliki logo Halal resmi.",
+    recSyubhat: "Status kehalalan bahan ini meragukan karena bisa berasal dari hewan atau tanaman. Disarankan untuk memverifikasi sertifikasi halal pabrik/produk.",
+    recHaram: "Bahan pangan ini dilarang dikonsumsi dalam syariat Islam. Harap hindari produk makanan yang mengandung bahan ini.",
   },
   en: {
     appTitle: "SmartHalal – Check Food Ingredients Halal Status",
@@ -71,6 +79,14 @@ const translations = {
     statusHaram: "HARAM",
     statusSyubhat: "DOUBTFUL",
     sourceText: "Source",
+    detailTitle: "Explanation & Islamic Law Review",
+    sourceTitle: "Raw Materials / Source",
+    closeButton: "Close",
+    copyButton: "Copy Info",
+    copiedText: "Copied!",
+    recHalal: "This ingredient is safe to consume directly. Ensure the product packaging has an official Halal logo.",
+    recSyubhat: "The halal status of this ingredient is doubtful as it can be derived from animals or plants. It is recommended to verify the product/manufacturer's halal certification.",
+    recHaram: "This ingredient is forbidden to consume in Islamic law. Please avoid food products containing this ingredient.",
   }
 };
 
