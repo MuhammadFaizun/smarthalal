@@ -169,7 +169,7 @@ export default function Home() {
   const [results, setResults] = useState<any[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [stats, setStats] = useState({ total: 10, halal: 60, syubhat: 30, haram: 10 });
+  const [stats, setStats] = useState<{ total: number; halal: number; syubhat: number; haram: number } | null>(null);
   const [currentQuery, setCurrentQuery] = useState('');
   const { t, language } = useLanguage();
 
@@ -273,10 +273,10 @@ export default function Home() {
               gap: '16px', marginTop: '48px',
             }}>
               {[
-                { label: t('statTotal'),   value: `${stats.total}`, color: '#f0fdf4' },
-                { label: t('statHalal'),   value: `${stats.halal}%`, color: '#4ade80' },
-                { label: t('statSyubhat'), value: `${stats.syubhat}%`, color: '#fbbf24' },
-                { label: t('statHaram'),   value: `${stats.haram}%`, color: '#f87171' },
+                { label: t('statTotal'),   value: stats ? `${stats.total}` : '...', color: '#f0fdf4' },
+                { label: t('statHalal'),   value: stats ? `${stats.halal}%` : '...', color: '#4ade80' },
+                { label: t('statSyubhat'), value: stats ? `${stats.syubhat}%` : '...', color: '#fbbf24' },
+                { label: t('statHaram'),   value: stats ? `${stats.haram}%` : '...', color: '#f87171' },
               ].map(s => (
                 <div key={s.label} className="glass-card" style={{ borderRadius: '16px', padding: '20px', textAlign: 'center' }}>
                   <div style={{ fontSize: '24px', fontWeight: 900, color: s.color, marginBottom: '4px' }}>{s.value}</div>
