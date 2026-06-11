@@ -59,7 +59,7 @@ export default function AdminDashboard() {
     setMessage({ type: '', text: '' });
 
     try {
-      const res = await fetch('http://localhost:3000/api/ingredients', {
+      const res = await fetch('/api/ingredients', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,8 +75,8 @@ export default function AdminDashboard() {
         const errData = await res.json();
         setMessage({ type: 'error', text: errData.message || 'Gagal menyimpan data.' });
       }
-    } catch {
-      setMessage({ type: 'error', text: 'Koneksi ke backend gagal. Pastikan backend berjalan di port 3000.' });
+      } catch {
+      setMessage({ type: 'error', text: 'Koneksi ke database gagal. Pastikan jaringan terhubung.' });
     } finally {
       setIsSubmitting(false);
     }
