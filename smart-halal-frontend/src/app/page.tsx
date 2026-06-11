@@ -4,6 +4,9 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+
+
 const dummyData = [
   { id: '1', eNumber: 'E471', name: 'Mono dan Digliserida Asam Lemak', status: 'SYUBHAT' as const, description: 'Emulsifier yang bisa berasal dari lemak nabati atau hewani. Status bergantung pada sumber lemak yang digunakan.', source: 'Lemak nabati atau hewani' },
   { id: '2', eNumber: null, name: 'Gelatin Sapi Murni', status: 'HALAL' as const, description: 'Aman dikonsumsi asalkan berasal dari sapi yang disembelih sesuai syariat Islam dan bersertifikasi.', source: 'Tulang sapi bersertifikasi' },
@@ -173,7 +176,7 @@ export default function Home() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/ingredients/stats');
+        const res = await fetch(`${API_BASE_URL}/api/ingredients/stats`);
         if (res.ok) {
           const json = await res.json();
           if (json.success && json.data) {
@@ -200,7 +203,7 @@ export default function Home() {
     setIsLoading(true);
     setHasSearched(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/ingredients?q=${encodeURIComponent(query)}&lang=${lang}`);
+      const res = await fetch(`${API_BASE_URL}/api/ingredients?q=${encodeURIComponent(query)}&lang=${lang}`);
       if (res.ok) {
         const data = await res.json();
         setResults(data.data || []);
