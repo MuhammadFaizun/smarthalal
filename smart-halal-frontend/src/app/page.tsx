@@ -1,11 +1,9 @@
 'use client';
-// Trigger Vercel build with updated root directory
 
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const API_BASE_URL = '';
-
 
 const dummyData = [
   { id: '1', eNumber: 'E471', name: 'Mono dan Digliserida Asam Lemak', status: 'SYUBHAT' as const, description: 'Emulsifier yang bisa berasal dari lemak nabati atau hewani. Status bergantung pada sumber lemak yang digunakan.', source: 'Lemak nabati atau hewani' },
@@ -13,26 +11,27 @@ const dummyData = [
   { id: '3', eNumber: 'E120', name: 'Karmin (Cochineal)', status: 'HARAM' as const, description: 'Zat pewarna merah yang diekstrak dari serangga Dactylopius coccus. Tidak halal karena berasal dari serangga.', source: 'Serangga Cochineal' },
 ];
 
-function IngredientCard({ item }: { item: any }) {
+function IngredientCard({ item, onClick }: { item: any; onClick: () => void }) {
   const { t, translateDynamic } = useLanguage();
 
   const STATUS_CONFIG = {
-    HALAL:   { label: t('statusHalal'),   color: '#4ade80', bg: 'rgba(34,197,94,0.1)',   border: 'rgba(34,197,94,0.2)',   dot: '✅', accent: '#22c55e', glow: 'rgba(34,197,94,0.07)'   },
-    HARAM:   { label: t('statusHaram'),   color: '#f87171', bg: 'rgba(239,68,68,0.1)',   border: 'rgba(239,68,68,0.2)',   dot: '🚫', accent: '#ef4444', glow: 'rgba(239,68,68,0.07)'   },
-    SYUBHAT: { label: t('statusSyubhat'), color: '#fbbf24', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.2)', dot: '⚠️', accent: '#f59e0b', glow: 'rgba(245,158,11,0.07)' },
+    HALAL:   { label: t('statusHalal'),   color: 'var(--color-halal)', bg: 'var(--bg-halal)',   border: 'var(--border-halal)',   dot: '✅', accent: '#22c55e', glow: 'var(--glow-halal)'   },
+    HARAM:   { label: t('statusHaram'),   color: 'var(--color-haram)', bg: 'var(--bg-haram)',   border: 'var(--border-haram)',   dot: '🚫', accent: '#ef4444', glow: 'var(--glow-haram)'   },
+    SYUBHAT: { label: t('statusSyubhat'), color: 'var(--color-syubhat)', bg: 'var(--bg-syubhat)', border: 'var(--border-syubhat)', dot: '⚠️', accent: '#f59e0b', glow: 'var(--glow-syubhat)' },
   };
 
   const cfg = STATUS_CONFIG[item.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.SYUBHAT;
 
   return (
     <div
-      style={{ borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}
+      onClick={onClick}
+      style={{ borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
       className="glass-card"
     >
       {/* Top color line */}
       <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-        background: `linear-gradient(90deg, transparent, ${cfg.accent}60, transparent)`
+        position: 'absolute', top: 0, left: 0, right: 0, height: '2px',
+        background: `linear-gradient(90deg, transparent, ${cfg.color}60, transparent)`
       }} />
 
       {/* Hover glow */}
@@ -46,11 +45,11 @@ function IngredientCard({ item }: { item: any }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', gap: '12px' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             {item.eNumber && (
-              <span style={{ fontSize: '11px', fontWeight: 700, color: cfg.accent, letterSpacing: '0.05em', fontFamily: 'monospace', display: 'block', marginBottom: '2px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: cfg.color, letterSpacing: '0.05em', fontFamily: 'monospace', display: 'block', marginBottom: '2px' }}>
                 {item.eNumber}
               </span>
             )}
-            <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#f0fdf4', lineHeight: 1.3 }}>{translateDynamic(item.name)}</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>{translateDynamic(item.name)}</h3>
           </div>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '5px',
@@ -63,22 +62,43 @@ function IngredientCard({ item }: { item: any }) {
         </div>
 
         {/* Divider */}
-        <div style={{ height: '1px', margin: '12px 0', background: `linear-gradient(90deg, transparent, ${cfg.accent}20, transparent)` }} />
+        <div style={{ height: '1px', margin: '12px 0', background: `linear-gradient(90deg, transparent, ${cfg.color}20, transparent)` }} />
 
         {item.description && (
-          <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: 1.6, marginBottom: '10px' }}>
+          <p style={{
+            fontSize: '14px',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.5,
+            marginBottom: '10px',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden'
+          }}>
             {translateDynamic(item.description)}
           </p>
         )}
-        {item.source && (
-          <div style={{ fontSize: '12px', color: '#4b5563', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <svg style={{ width: '14px', height: '14px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '14px' }}>
+          {item.source ? (
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flex: 1 }}>
+              <svg style={{ width: '14px', height: '14px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span style={{ whiteSpace: 'nowrap' }}>{t('sourceText')}:</span>
+              <span style={{ color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {translateDynamic(item.source)}
+              </span>
+            </div>
+          ) : <div />}
+          
+          <span style={{ fontSize: '11px', color: cfg.color, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0, marginLeft: '8px' }}>
+            Detail
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
-            <span>{t('sourceText')}:</span>
-            <span style={{ color: '#9ca3af' }}>{translateDynamic(item.source)}</span>
-          </div>
-        )}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -98,13 +118,13 @@ function SearchBar({ onSearch }: { onSearch: (q: string) => void }) {
       <form onSubmit={submit}>
         <div style={{
           display: 'flex', alignItems: 'center', borderRadius: '16px',
-          background: 'rgba(255,255,255,0.04)',
-          border: focused ? '1px solid rgba(34,197,94,0.5)' : '1px solid rgba(255,255,255,0.08)',
-          boxShadow: focused ? '0 0 0 3px rgba(34,197,94,0.12), 0 4px 24px rgba(0,0,0,0.3)' : '0 4px 24px rgba(0,0,0,0.3)',
-          transition: 'all 0.2s ease',
+          background: 'var(--glass-bg)',
+          border: focused ? '1px solid var(--color-halal)' : '1px solid var(--border-color)',
+          boxShadow: focused ? '0 0 0 3px var(--bg-halal), var(--glass-shadow)' : 'var(--glass-shadow)',
+          transition: 'all 0.25s ease',
         }}>
           <div style={{ padding: '0 12px 0 18px', display: 'flex', alignItems: 'center' }}>
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke={focused ? '#4ade80' : '#4b5563'} strokeWidth={2.5}>
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke={focused ? 'var(--color-halal)' : 'var(--text-muted)'} strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -119,11 +139,11 @@ function SearchBar({ onSearch }: { onSearch: (q: string) => void }) {
             style={{
               flex: 1, height: '54px', background: 'transparent',
               border: 'none', outline: 'none', fontSize: '15px',
-              fontWeight: 500, color: '#f0fdf4', fontFamily: 'Inter, sans-serif',
+              fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif',
             }}
           />
           {query && (
-            <button type="button" onClick={() => setQuery('')} style={{ padding: '8px', marginRight: '4px', cursor: 'pointer', background: 'none', border: 'none', color: '#6b7280', display: 'flex' }}>
+            <button type="button" onClick={() => setQuery('')} style={{ padding: '8px', marginRight: '4px', cursor: 'pointer', background: 'none', border: 'none', color: 'var(--text-muted)', display: 'flex' }}>
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -138,28 +158,317 @@ function SearchBar({ onSearch }: { onSearch: (q: string) => void }) {
       </form>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '14px', paddingLeft: '4px' }}>
-        <span style={{ fontSize: '12px', color: '#4b5563', fontWeight: 500 }}>{t('tryLabel')}</span>
+        <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 500 }}>{t('tryLabel')}</span>
         {SUGGESTIONS.map(s => (
           <button
             key={s} type="button"
             onClick={() => { setQuery(s); onSearch(s); }}
             style={{
               fontSize: '12px', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer',
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              color: '#9ca3af', fontFamily: 'Inter, sans-serif', transition: 'all 0.2s',
+              background: 'var(--glass-bg)', border: '1px solid var(--border-color)',
+              color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif', transition: 'all 0.2s',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.color = '#4ade80';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(34,197,94,0.3)';
-              (e.currentTarget as HTMLElement).style.background = 'rgba(34,197,94,0.07)';
+              (e.currentTarget as HTMLElement).style.color = 'var(--color-halal)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-halal)';
+              (e.currentTarget as HTMLElement).style.background = 'var(--bg-halal)';
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.color = '#9ca3af';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
+              (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)';
+              (e.currentTarget as HTMLElement).style.background = 'var(--glass-bg)';
             }}
           >{s}</button>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function StatsVisual({ stats, t }: { stats: any; t: any }) {
+  const r = 50;
+  const circ = 2 * Math.PI * r;
+
+  const p_halal = stats.halal;
+  const p_syubhat = stats.syubhat;
+  const p_haram = stats.haram;
+
+  const len_halal = (p_halal / 100) * circ;
+  const len_syubhat = (p_syubhat / 100) * circ;
+  const len_haram = (p_haram / 100) * circ;
+
+  const offset_halal = 0;
+  const offset_syubhat = -len_halal;
+  const offset_haram = -(len_halal + len_syubhat);
+
+  return (
+    <div className="glass-card fade-up-3" style={{
+      borderRadius: '24px',
+      padding: '32px',
+      marginTop: '40px',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '40px',
+      flexWrap: 'wrap',
+    }}>
+      {/* SVG Doughnut Chart */}
+      <div style={{ position: 'relative', width: '160px', height: '160px', flexShrink: 0 }}>
+        <svg width="100%" height="100%" viewBox="0 0 120 120" style={{ transform: 'rotate(-90deg)' }}>
+          <circle
+            cx="60"
+            cy="60"
+            r={r}
+            fill="transparent"
+            stroke="var(--border-color)"
+            strokeWidth="10"
+          />
+          {p_halal > 0 && (
+            <circle
+              cx="60"
+              cy="60"
+              r={r}
+              fill="transparent"
+              stroke="var(--color-halal)"
+              strokeWidth="10"
+              strokeDasharray={`${len_halal} ${circ - len_halal}`}
+              strokeDashoffset={offset_halal}
+              strokeLinecap="round"
+              style={{ transition: 'stroke-dasharray 0.5s ease' }}
+            />
+          )}
+          {p_syubhat > 0 && (
+            <circle
+              cx="60"
+              cy="60"
+              r={r}
+              fill="transparent"
+              stroke="var(--color-syubhat)"
+              strokeWidth="10"
+              strokeDasharray={`${len_syubhat} ${circ - len_syubhat}`}
+              strokeDashoffset={offset_syubhat}
+              strokeLinecap="round"
+              style={{ transition: 'stroke-dasharray 0.5s ease' }}
+            />
+          )}
+          {p_haram > 0 && (
+            <circle
+              cx="60"
+              cy="60"
+              r={r}
+              fill="transparent"
+              stroke="var(--color-haram)"
+              strokeWidth="10"
+              strokeDasharray={`${len_haram} ${circ - len_haram}`}
+              strokeDashoffset={offset_haram}
+              strokeLinecap="round"
+              style={{ transition: 'stroke-dasharray 0.5s ease' }}
+            />
+          )}
+        </svg>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'none',
+        }}>
+          <span style={{ fontSize: '28px', fontWeight: 900, color: 'var(--text-primary)', lineHeight: 1 }}>
+            {stats.total}
+          </span>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '2px' }}>
+            {t('statTotal').split(' ')[1] || 'Bahan'}
+          </span>
+        </div>
+      </div>
+
+      {/* Details List */}
+      <div style={{ flex: '1 1 240px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {[
+          { label: t('statHalal'), percent: stats.halal, color: 'var(--color-halal)', bg: 'var(--bg-halal)', desc: t('descHalal') },
+          { label: t('statSyubhat'), percent: stats.syubhat, color: 'var(--color-syubhat)', bg: 'var(--bg-syubhat)', desc: t('descSyubhat') },
+          { label: t('statHaram'), percent: stats.haram, color: 'var(--color-haram)', bg: 'var(--bg-haram)', desc: t('descHaram') },
+        ].map(item => (
+          <div key={item.label} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', fontWeight: 600 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
+                <span>{item.label}</span>
+              </div>
+              <span style={{ color: item.color, fontWeight: 800 }}>{item.percent}%</span>
+            </div>
+            
+            <div style={{ height: '6px', background: 'var(--border-color)', borderRadius: '999px', overflow: 'hidden' }}>
+              <div style={{
+                height: '100%',
+                width: `${item.percent}%`,
+                background: item.color,
+                borderRadius: '999px',
+                transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+              }} />
+            </div>
+            
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{item.desc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DetailModal({ item, onClose, t, translateDynamic }: { item: any; onClose: () => void; t: any; translateDynamic: any }) {
+  const [copied, setCopied] = useState(false);
+
+  const STATUS_CONFIG = {
+    HALAL:   { label: t('statusHalal'),   color: 'var(--color-halal)', bg: 'var(--bg-halal)',   border: 'var(--border-halal)',   dot: '✅', accent: '#22c55e', glow: 'var(--glow-halal)'   },
+    HARAM:   { label: t('statusHaram'),   color: 'var(--color-haram)', bg: 'var(--bg-haram)',   border: 'var(--border-haram)',   dot: '🚫', accent: '#ef4444', glow: 'var(--glow-haram)'   },
+    SYUBHAT: { label: t('statusSyubhat'), color: 'var(--color-syubhat)', bg: 'var(--bg-syubhat)', border: 'var(--border-syubhat)', dot: '⚠️', accent: '#f59e0b', glow: 'var(--glow-syubhat)' },
+  };
+
+  const cfg = STATUS_CONFIG[item.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.SYUBHAT;
+
+  const handleCopy = () => {
+    const textToCopy = `${translateDynamic(item.name)} (${item.eNumber || '-'}) - Status: ${cfg.label}\nSumber: ${translateDynamic(item.source || '-')}\nKeterangan: ${translateDynamic(item.description || '-')}`;
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  return (
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content" style={{ padding: '32px', position: 'relative' }}>
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
+          background: `linear-gradient(90deg, transparent, ${cfg.color}, transparent)`
+        }} />
+
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute', top: '16px', right: '16px',
+            width: '32px', height: '32px', borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'var(--bg-primary)', border: '1px solid var(--border-color)',
+            cursor: 'pointer', color: 'var(--text-secondary)', transition: 'all 0.2s',
+            outline: 'none',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--border-color)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-primary)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+        >
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div style={{ marginTop: '8px' }}>
+          {item.eNumber && (
+            <span style={{ fontSize: '12px', fontWeight: 700, color: cfg.color, letterSpacing: '0.08em', fontFamily: 'monospace', display: 'block', marginBottom: '4px' }}>
+              {item.eNumber}
+            </span>
+          )}
+          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.25, marginBottom: '16px' }}>
+            {translateDynamic(item.name)}
+          </h2>
+          
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            padding: '8px 16px', borderRadius: '999px',
+            background: cfg.bg, border: `1px solid ${cfg.border}`,
+            fontSize: '13px', fontWeight: 800, color: cfg.color, letterSpacing: '0.07em',
+          }}>
+            <span style={{ fontSize: '16px' }}>{cfg.dot}</span>
+            <span>{cfg.label}</span>
+          </div>
+        </div>
+
+        <div style={{ height: '1px', background: 'var(--border-color)', margin: '24px 0' }} />
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <h4 style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>
+              {t('sourceText')} / Bahan Baku
+            </h4>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-primary)', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke={cfg.color} strokeWidth={2} style={{ flexShrink: 0 }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                {translateDynamic(item.source) || '-'}
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <h4 style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>
+              Penjelasan & Tinjauan Syariat
+            </h4>
+            <div style={{ background: 'var(--bg-primary)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', lineHeight: 1.6, fontSize: '14px', color: 'var(--text-secondary)' }}>
+              {translateDynamic(item.description) || 'Tidak ada penjelasan tambahan.'}
+            </div>
+          </div>
+
+          <div style={{
+            background: cfg.bg,
+            border: `1px solid ${cfg.border}`,
+            borderRadius: '12px',
+            padding: '12px 16px',
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'flex-start',
+          }}>
+            <span style={{ fontSize: '18px', marginTop: '-2px' }}>💡</span>
+            <div style={{ fontSize: '12px', lineHeight: 1.5, color: cfg.color, fontWeight: 500 }}>
+              {item.status === 'HALAL' && 'Bahan pangan ini aman untuk dikonsumsi langsung. Pastikan kemasan produk memiliki logo Halal resmi.'}
+              {item.status === 'SYUBHAT' && 'Status kehalalan bahan ini meragukan karena bisa berasal dari hewan atau tanaman. Disarankan untuk memverifikasi sertifikasi halal pabrik/produk.'}
+              {item.status === 'HARAM' && 'Bahan pangan ini dilarang dikonsumsi dalam syariat Islam. Harap hindari produk makanan yang mengandung bahan ini.'}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ height: '1px', background: 'var(--border-color)', margin: '24px 0' }} />
+
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={onClose}
+            style={{
+              padding: '10px 20px', borderRadius: '12px', fontSize: '14px', fontWeight: 600,
+              background: 'transparent', border: '1px solid var(--border-color)',
+              color: 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text-secondary)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+          >
+            Tutup
+          </button>
+          <button
+            onClick={handleCopy}
+            className="btn-green"
+            style={{ padding: '0 20px', height: '40px', fontSize: '14px', position: 'relative' }}
+          >
+            {copied ? (
+              <>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Tersalin!
+              </>
+            ) : (
+              <>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Bagikan / Salin
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -171,7 +480,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [stats, setStats] = useState({ total: 1000, halal: 90, syubhat: 9, haram: 1 });
   const [currentQuery, setCurrentQuery] = useState('');
-  const { t, language } = useLanguage();
+  const [selectedIngredient, setSelectedIngredient] = useState<any | null>(null);
+  const { t, language, translateDynamic } = useLanguage();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -230,17 +540,16 @@ export default function Home() {
   }, [language]);
 
   return (
-    <main style={{ minHeight: '100vh', color: '#f0fdf4', position: 'relative' }}>
+    <main style={{ minHeight: '100vh', color: 'var(--text-primary)', position: 'relative' }}>
       <div className="page-bg" />
 
       <div className="hero-section">
-
         {/* Gold pill */}
         <div className="fade-up" style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
             padding: '8px 16px', borderRadius: '999px', fontSize: '12px', fontWeight: 700,
-            background: 'rgba(240,180,41,0.08)', border: '1px solid rgba(240,180,41,0.2)', color: '#fbbf24',
+            background: 'var(--gold-pill-bg)', border: '1px solid var(--gold-pill-border)', color: 'var(--gold-pill-text)',
           }}>
             {t('heroBadge')}
           </div>
@@ -248,14 +557,14 @@ export default function Home() {
 
         {/* Hero heading */}
         <div className="fade-up-1" style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 900, lineHeight: 1.15, letterSpacing: '-0.02em', color: '#fff', marginBottom: '16px' }}>
+          <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 900, lineHeight: 1.15, letterSpacing: '-0.02em', color: 'var(--text-primary)', marginBottom: '16px' }}>
             {t('heroTitlePart1')}
             <span className="text-grad-green">{t('heroTitleGradGreen')}</span>
             <br />
             {t('heroTitlePart2')}
             <span className="text-grad-gold">{t('heroTitleGradGold')}</span>
           </h1>
-          <p style={{ fontSize: '16px', maxWidth: '500px', margin: '0 auto', lineHeight: 1.7, color: '#6b7280' }}>
+          <p style={{ fontSize: '16px', maxWidth: '500px', margin: '0 auto', lineHeight: 1.7, color: 'var(--text-secondary)' }}>
             {t('heroSubtitle')}
           </p>
         </div>
@@ -267,32 +576,7 @@ export default function Home() {
 
         {!hasSearched && (
           <div className="fade-up-3">
-            <div className="stats-grid">
-              {[
-                { label: t('statTotal'),   value: `${stats.total}`, color: '#f0fdf4' },
-                { label: t('statHalal'),   value: `${stats.halal}%`, color: '#4ade80' },
-                { label: t('statSyubhat'), value: `${stats.syubhat}%`, color: '#fbbf24' },
-                { label: t('statHaram'),   value: `${stats.haram}%`, color: '#f87171' },
-              ].map(s => (
-                <div key={s.label} className="glass-card" style={{ borderRadius: '16px', padding: '20px', textAlign: 'center' }}>
-                  <div style={{ fontSize: '24px', fontWeight: 900, color: s.color, marginBottom: '4px' }}>{s.value}</div>
-                  <div style={{ fontSize: '12px', color: '#4b5563', fontWeight: 500 }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="legend-row">
-              {[
-                { text: t('descHalal'),   color: '#4ade80' },
-                { text: t('descSyubhat'), color: '#fbbf24' },
-                { text: t('descHaram'),   color: '#f87171' },
-              ].map(item => (
-                <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, color: item.color }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color, display: 'inline-block' }} />
-                  {item.text}
-                </div>
-              ))}
-            </div>
+            <StatsVisual stats={stats} t={t} />
           </div>
         )}
 
@@ -301,24 +585,24 @@ export default function Home() {
           {isLoading ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '80px', gap: '16px' }}>
               <div style={{ position: 'relative', width: '48px', height: '48px' }}>
-                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid rgba(34,197,94,0.15)' }} />
-                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', borderTop: '2px solid #22c55e', animation: 'spin 0.8s linear infinite' }} />
+                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid var(--border-color)' }} />
+                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', borderTop: '2px solid var(--color-halal)', animation: 'spin 0.8s linear infinite' }} />
               </div>
-              <p style={{ fontSize: '14px', color: '#4ade80', fontWeight: 500 }}>{t('loading')}</p>
+              <p style={{ fontSize: '14px', color: 'var(--color-halal)', fontWeight: 500 }}>{t('loading')}</p>
             </div>
           ) : hasSearched && results.length > 0 ? (
             <div>
-              <p style={{ fontSize: '13px', color: '#4b5563', marginBottom: '16px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px' }}>
                 {t('foundResults', { count: results.length }).split(String(results.length)).map((part, i, arr) =>
                   i < arr.length - 1
-                    ? <span key={i}>{part}<span style={{ color: '#4ade80', fontWeight: 700 }}>{results.length}</span></span>
+                    ? <span key={i}>{part}<span style={{ color: 'var(--color-halal)', fontWeight: 700 }}>{results.length}</span></span>
                     : <span key={i}>{part}</span>
                 )}
               </p>
               <div className="results-grid">
                 {results.map((item, i) => (
-                  <div key={item.id} className="fade-up" style={{ animationDelay: `${i * 0.06}s` }}>
-                    <IngredientCard item={item} />
+                  <div key={item.id} className="fade-up" style={{ animationDelay: `${i * 0.05}s` }}>
+                    <IngredientCard item={item} onClick={() => setSelectedIngredient(item)} />
                   </div>
                 ))}
               </div>
@@ -326,8 +610,8 @@ export default function Home() {
           ) : hasSearched && results.length === 0 ? (
             <div className="glass-card" style={{ borderRadius: '24px', padding: '48px', textAlign: 'center', maxWidth: '400px', margin: '0 auto' }}>
               <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f0fdf4', marginBottom: '8px' }}>{t('notFoundTitle')}</h3>
-              <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: 1.6 }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>{t('notFoundTitle')}</h3>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
                 {t('notFoundDesc')}
               </p>
             </div>
@@ -338,8 +622,18 @@ export default function Home() {
       {/* Bottom fade */}
       <div style={{
         position: 'fixed', bottom: 0, left: 0, right: 0, height: '60px', pointerEvents: 'none',
-        background: 'linear-gradient(to top, #070e09, transparent)',
+        background: 'linear-gradient(to top, var(--bg-primary), transparent)',
       }} />
+
+      {/* Detail Modal Popup */}
+      {selectedIngredient && (
+        <DetailModal
+          item={selectedIngredient}
+          onClose={() => setSelectedIngredient(null)}
+          t={t}
+          translateDynamic={translateDynamic}
+        />
+      )}
     </main>
   );
 }

@@ -2,57 +2,182 @@
 @import "tailwindcss";
 
 /* ============================================
-   BASE DARK THEME
+   DESIGN TOKENS & THEMING (CSS VARIABLES)
+   ============================================ */
+:root {
+  /* --- Default Light Theme Variables (Clean Mint) --- */
+  --bg-primary: #f2fbf5;
+  --bg-secondary: #ffffff;
+  --bg-radial-1: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(34,197,94,0.1) 0%, transparent 60%);
+  --bg-radial-2: radial-gradient(ellipse 50% 35% at 85% 80%, rgba(240,180,41,0.04) 0%, transparent 50%);
+  --bg-radial-3: radial-gradient(ellipse 40% 30% at 5% 60%, rgba(34,197,94,0.03) 0%, transparent 50%);
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  --border-color: rgba(34, 197, 94, 0.15);
+  
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(34, 197, 94, 0.14);
+  --glass-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --glass-hover-border: rgba(34, 197, 94, 0.32);
+  --glass-hover-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    0 0 32px rgba(34, 197, 94, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    
+  --card-glow: rgba(34, 197, 94, 0.02);
+  --input-bg: rgba(0, 0, 0, 0.02);
+  --input-border: rgba(0, 0, 0, 0.08);
+  --input-focus-bg: rgba(34, 197, 94, 0.03);
+  --input-focus-border: rgba(34, 197, 94, 0.4);
+  --input-placeholder: rgba(15, 23, 42, 0.35);
+
+  --stat-total-color: #0f172a;
+  --stat-total-label: #64748b;
+
+  /* Status Color Mappings (Light Mode) */
+  --color-halal: #16a34a;
+  --bg-halal: rgba(22, 163, 74, 0.08);
+  --border-halal: rgba(22, 163, 74, 0.2);
+  --glow-halal: rgba(22, 163, 74, 0.02);
+
+  --color-haram: #dc2626;
+  --bg-haram: rgba(220, 38, 38, 0.08);
+  --border-haram: rgba(220, 38, 38, 0.2);
+  --glow-haram: rgba(220, 38, 38, 0.02);
+
+  --color-syubhat: #d97706;
+  --bg-syubhat: rgba(217, 119, 6, 0.08);
+  --border-syubhat: rgba(217, 119, 6, 0.2);
+  --glow-syubhat: rgba(217, 119, 6, 0.02);
+  
+  --gold-pill-bg: rgba(217, 119, 6, 0.06);
+  --gold-pill-border: rgba(217, 119, 6, 0.15);
+  --gold-pill-text: #b45309;
+
+  --hero-title-color: #0f172a;
+  --navbar-link-color: #475569;
+  --navbar-link-hover: #0f172a;
+  --navbar-badge-bg: rgba(217, 119, 6, 0.06);
+  --navbar-badge-border: rgba(217, 119, 6, 0.15);
+  --navbar-badge-text: #b45309;
+}
+
+[data-theme="dark"] {
+  /* --- Default Dark Theme Variables (Emerald Dark) --- */
+  --bg-primary: #070e09;
+  --bg-secondary: #101e12;
+  --bg-radial-1: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(34,197,94,0.14) 0%, transparent 55%);
+  --bg-radial-2: radial-gradient(ellipse 50% 35% at 85% 80%, rgba(240,180,41,0.07) 0%, transparent 50%);
+  --bg-radial-3: radial-gradient(ellipse 40% 30% at 5% 60%, rgba(34,197,94,0.06) 0%, transparent 50%);
+  
+  --text-primary: #f0fdf4;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  --border-color: rgba(34, 197, 94, 0.12);
+  
+  --glass-bg: rgba(16, 30, 18, 0.85);
+  --glass-border: rgba(34, 197, 94, 0.12);
+  --glass-shadow: 
+    0 4px 32px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --glass-hover-border: rgba(34, 197, 94, 0.28);
+  --glass-hover-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(34, 197, 94, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    
+  --card-glow: rgba(34, 197, 94, 0.06);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-border: rgba(255, 255, 255, 0.09);
+  --input-focus-bg: rgba(34, 197, 94, 0.05);
+  --input-focus-border: rgba(34, 197, 94, 0.5);
+  --input-placeholder: rgba(255, 255, 255, 0.25);
+
+  --stat-total-color: #f0fdf4;
+  --stat-total-label: #4b5563;
+
+  /* Status Color Mappings (Dark Mode) */
+  --color-halal: #4ade80;
+  --bg-halal: rgba(34, 197, 94, 0.1);
+  --border-halal: rgba(34, 197, 94, 0.2);
+  --glow-halal: rgba(34, 197, 94, 0.07);
+
+  --color-haram: #f87171;
+  --bg-haram: rgba(239, 68, 68, 0.1);
+  --border-haram: rgba(239, 68, 68, 0.2);
+  --glow-haram: rgba(239, 68, 68, 0.07);
+
+  --color-syubhat: #fbbf24;
+  --bg-syubhat: rgba(245, 158, 11, 0.1);
+  --border-syubhat: rgba(245, 158, 11, 0.2);
+  --glow-syubhat: rgba(245, 158, 11, 0.07);
+  
+  --gold-pill-bg: rgba(240, 180, 41, 0.08);
+  --gold-pill-border: rgba(240, 180, 41, 0.2);
+  --gold-pill-text: #fbbf24;
+
+  --hero-title-color: #fff;
+  --navbar-link-color: #9ca3af;
+  --navbar-link-hover: #f0fdf4;
+  --navbar-badge-bg: rgba(240, 180, 41, 0.08);
+  --navbar-badge-border: rgba(240, 180, 41, 0.2);
+  --navbar-badge-text: #fbbf24;
+}
+
+/* ============================================
+   BASE LAYOUT STYLING
    ============================================ */
 html {
-  background: #070e09;
+  background: var(--bg-primary);
   scroll-behavior: smooth;
+  transition: background-color 0.4s ease;
 }
 
 body {
-  background: #070e09;
-  color: #f0fdf4;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* ============================================
-   ANIMATED BACKGROUND
-   ============================================ */
 .page-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-color: #070e09;
+  background-color: var(--bg-primary);
   background-image:
-    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(34,197,94,0.14) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 35% at 85% 80%, rgba(240,180,41,0.07) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 5% 60%,  rgba(34,197,94,0.06) 0%, transparent 50%);
+    var(--bg-radial-1),
+    var(--bg-radial-2),
+    var(--bg-radial-3);
+  transition: background-color 0.4s ease, background-image 0.4s ease;
 }
 
 /* ============================================
    GLASSMORPHISM CARD
    ============================================ */
 .glass-card {
-  background: rgba(16, 30, 18, 0.85);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(34, 197, 94, 0.12);
-  box-shadow:
-    0 4px 32px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
 }
 
 .glass-card:hover {
-  border-color: rgba(34, 197, 94, 0.28);
-  box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(34, 197, 94, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-color: var(--glass-hover-border);
+  box-shadow: var(--glass-hover-shadow);
 }
 
 /* ============================================
@@ -100,54 +225,51 @@ body {
 .btn-green:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* ============================================
-   INPUT FIELD
+   INPUT FIELDS
    ============================================ */
 .input-field {
   display: block;
   width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.09);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 12px;
-  color: #f0fdf4;
+  color: var(--text-primary);
   padding: 12px 16px;
   font-size: 0.875rem;
-  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, color 0.2s;
   outline: none;
 }
 
-.input-field::placeholder { color: rgba(255,255,255,0.25); }
+.input-field::placeholder { color: var(--input-placeholder); }
 
 .input-field:focus {
-  border-color: rgba(34, 197, 94, 0.5);
-  background: rgba(34, 197, 94, 0.05);
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+  border-color: var(--input-focus-border);
+  background: var(--input-focus-bg);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
 }
 
-/* ============================================
-   SELECT FIELD
-   ============================================ */
 .select-field {
   display: block;
   width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.09);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 12px;
-  color: #f0fdf4;
+  color: var(--text-primary);
   padding: 12px 16px;
   font-size: 0.875rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
   outline: none;
   appearance: none;
   cursor: pointer;
 }
 
 .select-field:focus {
-  border-color: rgba(34, 197, 94, 0.5);
-  background: rgba(34, 197, 94, 0.05);
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+  border-color: var(--input-focus-border);
+  background: var(--input-focus-bg);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
 }
 
-.select-field option { background: #0c1a10; color: #f0fdf4; }
+.select-field option { background: var(--bg-secondary); color: var(--text-primary); }
 
 /* ============================================
    BADGE
@@ -164,39 +286,39 @@ body {
   text-transform: uppercase;
 }
 
-.badge-halal   { background: rgba(34,197,94,0.12);  color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
-.badge-haram   { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
-.badge-syubhat { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+.badge-halal   { background: var(--bg-halal);    color: var(--color-halal);    border: 1px solid var(--border-halal); }
+.badge-haram   { background: var(--bg-haram);    color: var(--color-haram);    border: 1px solid var(--border-haram); }
+.badge-syubhat { background: var(--bg-syubhat);  color: var(--color-syubhat);  border: 1px solid var(--border-syubhat); }
 
 /* ============================================
    DIVIDER
    ============================================ */
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(34,197,94,0.2), transparent);
+  background: linear-gradient(90deg, transparent, var(--border-color), transparent);
 }
 
 /* ============================================
-   ANIMATIONS
+   ANIMATIONS & TRANSITIONS
    ============================================ */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.fade-up   { animation: fadeUp 0.5s ease-out both; }
-.fade-up-1 { animation: fadeUp 0.5s 0.08s ease-out both; }
-.fade-up-2 { animation: fadeUp 0.5s 0.16s ease-out both; }
-.fade-up-3 { animation: fadeUp 0.5s 0.24s ease-out both; }
-.fade-up-4 { animation: fadeUp 0.5s 0.32s ease-out both; }
+.fade-up   { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-up-1 { animation: fadeUp 0.5s 0.06s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-up-2 { animation: fadeUp 0.5s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-up-3 { animation: fadeUp 0.5s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-up-4 { animation: fadeUp 0.5s 0.24s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
 /* ============================================
    SCROLLBAR
    ============================================ */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0c1a10; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(34,197,94,0.5); }
 
@@ -305,4 +427,45 @@ body {
   button {
     min-height: 36px;
   }
+}
+
+/* ============================================
+   MODAL WINDOW & OVERLAY
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  position: relative;
+  box-sizing: border-box;
+  animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.92) translateY(12px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
 }

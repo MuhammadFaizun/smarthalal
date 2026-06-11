@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,12 +20,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className={inter.className} style={{ background: '#070e09' }}>
-      <body style={{ background: '#070e09', color: '#f0fdf4' }}>
-        <LanguageProvider>
-          <Navbar />
-          {children}
-        </LanguageProvider>
+    <html lang="id" className={inter.className}>
+      <body>
+        <ThemeProvider>
+          <LanguageProvider>
+            <Navbar />
+            {children}
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
