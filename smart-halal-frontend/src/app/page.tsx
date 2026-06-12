@@ -451,41 +451,22 @@ export default function Home() {
           <div className="fade-up-3">
             <div className="stats-grid">
               {[
-                { label: t('statTotal'),   value: `${stats.total}`, color: 'var(--text-primary)', glow: 'rgba(34,197,94,0.02)', border: 'var(--border-color)', topBorder: 'var(--text-primary)' },
-                { label: t('statHalal'),   value: `${stats.halal}%`, color: 'var(--color-halal)', glow: 'var(--glow-halal)', border: 'var(--border-halal)', topBorder: 'var(--color-halal)' },
-                { label: t('statSyubhat'), value: `${stats.syubhat}%`, color: 'var(--color-syubhat)', glow: 'var(--glow-syubhat)', border: 'var(--border-syubhat)', topBorder: 'var(--color-syubhat)' },
-                { label: t('statHaram'),   value: `${stats.haram}%`, color: 'var(--color-haram)', glow: 'var(--glow-haram)', border: 'var(--border-haram)', topBorder: 'var(--color-haram)' },
+                { label: t('statTotal'),   value: `${stats.total}`, color: 'var(--text-primary)' },
+                { label: t('statHalal'),   value: `${stats.halal}%`, color: 'var(--color-halal)' },
+                { label: t('statSyubhat'), value: `${stats.syubhat}%`, color: 'var(--color-syubhat)' },
+                { label: t('statHaram'),   value: `${stats.haram}%`, color: 'var(--color-haram)' },
               ].map(s => (
                 <div
                   key={s.label}
                   className="glass-card"
                   style={{
                     borderRadius: '16px',
-                    padding: '24px 20px',
+                    padding: '20px',
                     textAlign: 'center',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.transform = 'translateY(-3px)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  {/* Glowing background */}
-                  <div style={{
-                    position: 'absolute', top: '-40px', right: '-40px', width: '90px', height: '90px',
-                    borderRadius: '50%', filter: 'blur(20px)', pointerEvents: 'none', background: s.glow,
-                  }} />
-                  {/* Colored top line */}
-                  <div style={{
-                    position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-                    background: s.topBorder,
-                  }} />
-                  <div style={{ fontSize: '28px', fontWeight: 900, color: s.color, marginBottom: '6px', lineHeight: 1.1 }}>{s.value}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
+                  <div style={{ fontSize: '24px', fontWeight: 900, color: s.color, marginBottom: '4px' }}>{s.value}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 500 }}>{s.label}</div>
                 </div>
               ))}
             </div>
