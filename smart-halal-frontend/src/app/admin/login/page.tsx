@@ -28,7 +28,7 @@ export default function AdminLogin() {
   return (
     <main style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', padding: '16px', color: '#f0fdf4', position: 'relative'
+      justifyContent: 'center', padding: '16px', color: 'var(--text-primary)', position: 'relative'
     }}>
       <div className="page-bg" />
 
@@ -71,8 +71,8 @@ export default function AdminLogin() {
 
           {/* Title */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', marginBottom: '6px' }}>Area Admin</h1>
-            <p style={{ fontSize: '14px', color: '#9ca3af' }}>Halaman ini tidak tersedia untuk publik</p>
+            <h1 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>Area Admin</h1>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Halaman ini tidak tersedia untuk publik</p>
           </div>
 
           {/* Error */}
@@ -92,7 +92,7 @@ export default function AdminLogin() {
               <label htmlFor="admin-password" style={{
                 display: 'block', fontSize: '11px', fontWeight: 700,
                 textTransform: 'uppercase', letterSpacing: '0.1em',
-                color: '#9ca3af', marginBottom: '8px',
+                color: 'var(--text-secondary)', marginBottom: '8px',
               }}>
                 Password Admin
               </label>
@@ -104,24 +104,7 @@ export default function AdminLogin() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                style={{
-                  display: 'block', width: '100%',
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.09)',
-                  borderRadius: '12px', color: '#f0fdf4',
-                  padding: '13px 16px', fontSize: '14px',
-                  fontFamily: 'Inter, sans-serif', outline: 'none',
-                  boxSizing: 'border-box',
-                  transition: 'border-color 0.2s, box-shadow 0.2s',
-                }}
-                onFocus={e => {
-                  e.currentTarget.style.borderColor = 'rgba(34,197,94,0.5)';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.1)';
-                }}
-                onBlur={e => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="input-field"
               />
             </div>
 
@@ -151,7 +134,7 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: '12px', color: '#4b5563', marginTop: '24px' }}>
+          <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--text-muted)', marginTop: '24px' }}>
             Akses URL ini hanya diketahui oleh administrator
           </p>
         </div>

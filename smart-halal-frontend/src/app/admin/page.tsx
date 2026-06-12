@@ -10,28 +10,11 @@ const STATUS_OPTIONS = [
   { value: 'HARAM',   label: '🚫 Haram',               color: '#f87171' },
 ];
 
-const fieldStyle: React.CSSProperties = {
-  display: 'block', width: '100%', background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.09)', borderRadius: '12px',
-  color: '#f0fdf4', padding: '12px 16px', fontSize: '14px',
-  fontFamily: 'Inter, sans-serif', outline: 'none', boxSizing: 'border-box',
-  transition: 'border-color 0.2s, box-shadow 0.2s',
-};
-
 const labelStyle: React.CSSProperties = {
   display: 'block', fontSize: '11px', fontWeight: 700,
   textTransform: 'uppercase', letterSpacing: '0.1em',
-  color: '#9ca3af', marginBottom: '8px',
+  color: 'var(--text-secondary)', marginBottom: '8px',
 };
-
-function focusStyle(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-  e.currentTarget.style.borderColor = 'rgba(34,197,94,0.5)';
-  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.1)';
-}
-function blurStyle(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
-  e.currentTarget.style.boxShadow = 'none';
-}
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -75,7 +58,7 @@ export default function AdminDashboard() {
         const errData = await res.json();
         setMessage({ type: 'error', text: errData.message || 'Gagal menyimpan data.' });
       }
-      } catch {
+    } catch {
       setMessage({ type: 'error', text: 'Koneksi ke database gagal. Pastikan jaringan terhubung.' });
     } finally {
       setIsSubmitting(false);
@@ -90,7 +73,7 @@ export default function AdminDashboard() {
   if (!isAuthorized) return null;
 
   return (
-    <div style={{ minHeight: '100vh', position: 'relative', color: '#f0fdf4' }}>
+    <div style={{ minHeight: '100vh', position: 'relative', color: 'var(--text-primary)' }}>
       <div className="page-bg" />
 
       {/* Admin Topbar */}
@@ -109,23 +92,23 @@ export default function AdminDashboard() {
                 </svg>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontWeight: 800, fontSize: '14px', color: '#fff' }}>
+                <span style={{ fontWeight: 800, fontSize: '14px', color: 'var(--text-primary)' }}>
                   Smart<span className="text-grad-green">Halal</span>
                 </span>
                 <span style={{
                   fontSize: '10px', fontWeight: 700, textTransform: 'uppercase',
                   letterSpacing: '0.08em', padding: '3px 8px', borderRadius: '6px',
-                  color: '#4ade80', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)',
+                  color: 'var(--color-halal)', background: 'var(--bg-halal)', border: '1px solid var(--border-halal)',
                 }}>Admin</span>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Link href="/" style={{
-                fontSize: '13px', fontWeight: 600, color: '#9ca3af',
+                fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)',
                 textDecoration: 'none', padding: '6px 12px', borderRadius: '8px', transition: 'color 0.2s',
               }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#f0fdf4')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#9ca3af')}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
               >← Beranda</Link>
               <button onClick={handleLogout} style={{
                 fontSize: '13px', fontWeight: 600, padding: '6px 12px', borderRadius: '8px',
@@ -150,7 +133,7 @@ export default function AdminDashboard() {
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '7px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 700,
-              background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80',
+              background: 'var(--bg-halal)', border: '1px solid var(--border-halal)', color: 'var(--color-halal)',
               marginBottom: '16px',
             }}>
               <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -158,10 +141,10 @@ export default function AdminDashboard() {
               </svg>
               Panel Manajemen Data
             </div>
-            <h2 style={{ fontSize: '28px', fontWeight: 900, color: '#fff', marginBottom: '8px' }}>
+            <h2 style={{ fontSize: '28px', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '8px' }}>
               Tambah Bahan Pangan
             </h2>
-            <p style={{ fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
               Data yang ditambahkan akan langsung tersimpan ke database SmartHalal.
             </p>
           </div>
@@ -196,7 +179,7 @@ export default function AdminDashboard() {
                   id="name" name="name" type="text" required
                   value={formData.name} onChange={handleChange}
                   placeholder="Contoh: Gelatin, Karmin, Lesitin Kedelai..."
-                  style={fieldStyle} onFocus={focusStyle} onBlur={blurStyle}
+                  className="input-field"
                 />
               </div>
 
@@ -208,8 +191,8 @@ export default function AdminDashboard() {
                     id="eNumber" name="eNumber" type="text"
                     value={formData.eNumber} onChange={handleChange}
                     placeholder="E471, E120..."
-                    style={{ ...fieldStyle, fontFamily: 'monospace' }}
-                    onFocus={focusStyle} onBlur={blurStyle}
+                    className="input-field"
+                    style={{ fontFamily: 'monospace' }}
                   />
                 </div>
                 <div>
@@ -219,11 +202,10 @@ export default function AdminDashboard() {
                   <select
                     id="status" name="status" required
                     value={formData.status} onChange={handleChange}
-                    style={{ ...fieldStyle, appearance: 'none', cursor: 'pointer' }}
-                    onFocus={focusStyle} onBlur={blurStyle}
+                    className="select-field"
                   >
                     {STATUS_OPTIONS.map(o => (
-                      <option key={o.value} value={o.value} style={{ background: '#0c1a10', color: '#f0fdf4' }}>
+                      <option key={o.value} value={o.value}>
                         {o.label}
                       </option>
                     ))}
@@ -238,7 +220,7 @@ export default function AdminDashboard() {
                   id="source" name="source" type="text"
                   value={formData.source} onChange={handleChange}
                   placeholder="Hewani (sapi), Nabati (kedelai), Sintetis..."
-                  style={fieldStyle} onFocus={focusStyle} onBlur={blurStyle}
+                  className="input-field"
                 />
               </div>
 
@@ -249,8 +231,8 @@ export default function AdminDashboard() {
                   id="description" name="description" rows={4}
                   value={formData.description} onChange={handleChange}
                   placeholder="Jelaskan alasan penetapan status kehalalan bahan ini..."
-                  style={{ ...fieldStyle, resize: 'none' }}
-                  onFocus={focusStyle} onBlur={blurStyle}
+                  className="input-field"
+                  style={{ resize: 'none' }}
                 />
               </div>
 
@@ -288,7 +270,7 @@ export default function AdminDashboard() {
             </form>
           </div>
 
-          <p style={{ textAlign: 'center', fontSize: '12px', color: '#374151', marginTop: '20px' }}>
+          <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--text-muted)', marginTop: '20px' }}>
             Data akan langsung tersedia di halaman pencarian publik setelah disimpan.
           </p>
         </div>
